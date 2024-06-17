@@ -29,7 +29,8 @@ def detail(request, question_id):
 
 def results(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
-    return render(request, "polls/results.html", { "question": question })
+    choices = question.choice_set.order_by("-votes")
+    return render(request, "polls/results.html", { "question": question , "choices": choices })
     
 
 def vote(request, question_id):
