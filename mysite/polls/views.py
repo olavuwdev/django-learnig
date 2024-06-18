@@ -1,10 +1,32 @@
 from django.shortcuts import render, get_object_or_404
 from django.db.models import F
 from django.urls import reverse
+from django.views import generic
 from .models import Question, Choice
 from django.http import HttpResponse, HttpResponseRedirect
 
+class IndexView(generic.ListView):
+    template_name = "polls/index.html"
+    context_object_name = "latest_question_list"
 
+    def get_queryset(self):
+        """Return the last five published questions."""
+        return Question.objects.order_by("-pub_date")[:5]
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['latest_choice_list'] = Choice.objects.order_by("-choice_text")
+        return context
+
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = "polls/detail.html"
+
+
+class ResultsView(generic.DetailView):
+    model = Question
+    model = Choice
+    template_name = "polls/results.html"
+"""
 def index(request):
     latest_question_list = Question.objects.order_by("-pub_date")[:5]
     lastest_choice_list = Choice.objects.order_by("-choice_text")
@@ -32,7 +54,7 @@ def results(request, question_id):
     choices = question.choice_set.order_by("-votes")
     return render(request, "polls/results.html", { "question": question , "choices": choices })
     
-
+"""
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     try:
@@ -43,10 +65,10 @@ def vote(request, question_id):
             "polls/detail.html",
             {
                 "question": question,
-                "erro_message": "Você não selecionou a resposta!"},
+                "error_message": "Você não selecionou a resposta!"},
 
         )
     else:
         selected_choice.votes = F("votes") + 1
         selected_choice.save()
-        return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
+        return HttpResponseRedirect(reverse("polls:results", pk=question.id))

@@ -22,10 +22,10 @@
             {% else %}
             <p class="no-polls">No polls are available.</p>
             {% endif %}
-            {% if lastest_choice_list %}
+            {% if latest_choice_list %}
             <h2>Respostas</h2>
             <ul>
-                {% for choice in lastest_choice_list %}
+                {% for choice in latest_choice_list %}
                 <li>
                         <a href="{% url 'polls:detail' choice.question_id %}">
                         {{ choice.choice_text }}
@@ -34,7 +34,7 @@
                 {% endfor %}
                 </ul>
             {% else %}
-                <p class="no-polls">No polls are available.</p>
+                <p class="no-polls">No choices are available.</p>
             {% endif %}
         </div>
     </div>
