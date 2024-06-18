@@ -12,7 +12,11 @@ class IndexView(generic.ListView):
     def get_queryset(self):
         """Return the last five published questions."""
         return Question.objects.order_by("-pub_date")[:5]
+    def get_queryset(self):
+        """Return the last five published questions."""
+        return Question.objects.order_by("-pub_date")[:5]
     def get_context_data(self, **kwargs):
+        """Add the latest choices to the context."""
         context = super().get_context_data(**kwargs)
         context['latest_choice_list'] = Choice.objects.order_by("-choice_text")
         return context
@@ -20,7 +24,6 @@ class IndexView(generic.ListView):
 class DetailView(generic.DetailView):
     model = Question
     template_name = "polls/detail.html"
-
 
 class ResultsView(generic.DetailView):
     model = Question
