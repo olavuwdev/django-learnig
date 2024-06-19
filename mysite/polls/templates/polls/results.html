@@ -3,7 +3,7 @@
 <div class="container">
 <h1>{{ question.question_text }}</h1>
 <ul>
-{% for choice in question.choice_set.all %}
+{% for choice in ordered_choices %}
     <li>{{ choice.choice_text }} -- {{ choice.votes }} voto{{ choice.votes|pluralize  }}</li>
 {% endfor %}
 </ul>
