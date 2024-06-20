@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.utils import timezone
 from django.db.models import F
 from django.urls import reverse
 from django.views import generic
@@ -11,10 +12,8 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         """Return the last five published questions."""
-        return Question.objects.order_by("-pub_date")[:5]
-    def get_queryset(self):
-        """Return the last five published questions."""
-        return Question.objects.order_by("-pub_date")[:5]
+        return Question.objects.filter(pub_date__lte=timezone.now()).order_by("-pub_date")[:5]
+
     def get_context_data(self, **kwargs):
         """Add the latest choices to the context."""
         context = super().get_context_data(**kwargs)
@@ -29,7 +28,7 @@ class ResultsView(generic.DetailView):
     model = Question
     template_name = "polls/results.html"
 
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         question = self.object
