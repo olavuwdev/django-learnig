@@ -24,7 +24,8 @@
                 {% endfor %}
             </fieldset>
                 <div class="botao-voto">
-                    <input type="submit" value="Votar" class="btn">
+                    <input type="submit" value="Votar" class="btn"><br><br>
+                    <a class="btn" href="{% url 'polls:index' %}"> Retornar</a>
                 </div>
         </form>
     </div>
